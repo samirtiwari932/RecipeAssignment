@@ -2,10 +2,12 @@
 import { useState } from "react";
 import { Meal, MealResponse } from "./types";
 import RecipeCard from "@/components/ReceipeCard";
+import { Button } from "@/components/ui/button";
 
 export default function Home() {
   const [searchTerm, setSearchTerm] = useState<string>("");
   const [recipes, setRecipes] = useState<Meal[]>([]);
+  
 
   const handleSearch = async () => {
     if (!searchTerm) return;
@@ -33,13 +35,19 @@ export default function Home() {
           placeholder="Search for a meal..."
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
+          onKeyDown={(e) => {
+            if (e.key === "Enter") {
+              handleSearch();
+            }
+          }}
         />
-        <button
+        <Button
+          variant="destructive"
           onClick={handleSearch}
-          className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded ml-2"
+          className=" hover:bg-gradient-custom  text-white font-bold py-2 px-4 rounded ml-2"
         >
           Search
-        </button>
+        </Button>
       </div>
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8">
         {recipes.map((recipe) => (

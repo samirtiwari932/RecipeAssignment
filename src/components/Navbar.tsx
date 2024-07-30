@@ -5,14 +5,14 @@ import MobileMenu from "./MobileMenu";
 
 const Navbar = () => {
   return (
-    <nav className="bg-white z-50">
-      <div className="max-w-screen-xl flex items-center justify-between mx-auto p-4">
+    <header className="  bg-white z-50 ">
+      <div className="max-w-screen-xl flex items-center  text-center justify-between mx-auto p-2">
         {/* Logo */}
-        <Link href="/" className="flex items-center space-x-3 w-full md:w-auto">
+        <Link href="/" className="flex items-center space-x-3 h-10   md:w-auto">
           <Image
             priority
-            src="/logo.jpg"
-            width={52}
+            src="/logo.png"
+            width={100}
             height={52}
             alt="Logo Image"
           />
@@ -74,7 +74,7 @@ const Navbar = () => {
           </ul>
         </div>
       </div>
-    </nav>
+    </header>
   );
 };
 
