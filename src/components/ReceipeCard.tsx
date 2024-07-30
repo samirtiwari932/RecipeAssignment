@@ -1,6 +1,6 @@
 // components/RecipeCard.tsx
 import Link from "next/link";
-import { Meal } from "../types";
+import { Meal } from "../../app/types";
 interface RecipeCardProps {
   recipe: Meal;
 }

@@ -1,7 +1,7 @@
 "use client";
 import { useState } from "react";
 import { Meal, MealResponse } from "./types";
-import RecipeCard from "./components/ReceipeCard";
+import RecipeCard from "@/components/ReceipeCard";
 
 export default function Home() {
   const [searchTerm, setSearchTerm] = useState<string>("");
