@@ -1,5 +1,5 @@
 "use client";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Meal, MealResponse } from "./types";
 import RecipeCard from "@/components/ReceipeCard";
 import { Button } from "@/components/ui/button";
@@ -7,6 +7,14 @@ import { Button } from "@/components/ui/button";
 export default function Home() {
   const [searchTerm, setSearchTerm] = useState<string>("");
   const [recipes, setRecipes] = useState<Meal[]>([]);
+
+  useEffect(() => {
+    // Retrieve recipes from local storage when the component mounts
+    const savedRecipes = localStorage.getItem("recipes");
+    if (savedRecipes) {
+      setRecipes(JSON.parse(savedRecipes));
+    }
+  }, []);
 
   const handleSearch = async () => {
     if (!searchTerm) return;
@@ -17,8 +25,10 @@ export default function Home() {
       );
       const data: MealResponse = await response.json();
       console.log(data, "this is data");
-      await setRecipes(data.meals);
-      console.log(recipes, "this is receipe ");
+      const fetchedRecipes = data.meals;
+      setRecipes(fetchedRecipes);
+      localStorage.setItem("recipes", JSON.stringify(fetchedRecipes));
+      console.log(fetchedRecipes, "this is recipe");
     } catch (error) {
       console.error("Error fetching recipes:", error);
     }
@@ -43,7 +53,7 @@ export default function Home() {
         <Button
           variant="destructive"
           onClick={handleSearch}
-          className=" hover:bg-gradient-custom  text-white font-bold py-2 px-4 rounded ml-2"
+          className="hover:bg-gradient-custom text-white font-bold py-2 px-4 rounded ml-2"
         >
           Search
         </Button>

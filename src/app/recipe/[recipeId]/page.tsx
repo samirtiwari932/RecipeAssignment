@@ -4,15 +4,17 @@
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { Meal, MealResponse } from "@/app/types";
+import Image from "next/image";
+
 interface PageProps {
   params: {
     recipeId: string;
   };
 }
+
 export default function RecipeDetail({ params }: PageProps) {
   const [recipe, setRecipe] = useState<Meal | null>(null);
   const { recipeId } = params;
-  console.log(recipeId,"checker receipe ID")
 
   useEffect(() => {
     if (!recipeId) return;
@@ -33,7 +35,7 @@ export default function RecipeDetail({ params }: PageProps) {
   }, [recipeId]);
 
   if (!recipe) {
-    return <div className="text-center">Loading...</div>;
+    return <div className="text-center text-lg">Loading...</div>;
   }
 
   const ingredients = Object.entries(recipe)
@@ -50,28 +52,57 @@ export default function RecipeDetail({ params }: PageProps) {
     )
     .map(([_, value]) => value);
 
+  // Function to format instructions with step numbers
+  const formatInstructions = (instructions: string) => {
+    const steps = instructions.split("\n").filter((step) => step.trim() !== "");
+    return steps.map((step, index) => (
+      <div key={index} className="mb-2">
+        <span className="font-bold">Step {index + 1}:</span> {step}
+      </div>
+    ));
+  };
+
   return (
     <div className="container mx-auto px-4 py-8">
       <h1 className="text-4xl font-bold text-center mb-8">{recipe.strMeal}</h1>
-      <div className="flex flex-col md:flex-row">
-        <img
-          className="w-full md:w-1/2 h-64 object-cover rounded mb-4 md:mb-0"
+      <div className="flex flex-col md:flex-row mb-8">
+        <Image
+          className="rounded-lg shadow-md"
           src={recipe.strMealThumb}
           alt={recipe.strMeal}
+          width={500}
+          height={500}
         />
-        <div className="md:ml-8">
+        <div className="md:ml-8 flex-1">
           <h2 className="text-2xl font-bold mb-4">Ingredients</h2>
           <ul className="list-disc pl-5 mb-4">
             {ingredients.map((ingredient, index) => (
-              <li key={index}>
+              <li key={index} className="text-lg">
                 {ingredient} - {measures[index]}
               </li>
             ))}
           </ul>
           <h2 className="text-2xl font-bold mb-4">Instructions</h2>
-          <p className="whitespace-pre-line">{recipe.strInstructions}</p>
+          <div className="text-lg">
+            {formatInstructions(recipe.strInstructions)}
+          </div>
         </div>
       </div>
+      {recipe.strYoutube && (
+        <div className="flex justify-center mb-8">
+          <iframe
+            width="560"
+            height="315"
+            src={`https://www.youtube.com/embed/${
+              recipe.strYoutube.split("v=")[1]
+            }`}
+            title="YouTube video player"
+            frameBorder="0"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+            allowFullScreen
+          ></iframe>
+        </div>
+      )}
     </div>
   );
 }
