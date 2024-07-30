@@ -66,13 +66,31 @@ export default function RecipeDetail({ params }: PageProps) {
     <div className="container mx-auto px-4 py-8">
       <h1 className="text-4xl font-bold text-center mb-8">{recipe.strMeal}</h1>
       <div className="flex flex-col md:flex-row mb-8">
-        <Image
-          className="rounded-lg shadow-md"
-          src={recipe.strMealThumb}
-          alt={recipe.strMeal}
-          width={500}
-          height={500}
-        />
+        <div className="relative flex flex-col gap-48">
+          <div className="relative hidden md:flex w-full md:w-[560px] md:h-[314px]">
+            <Image
+              src={recipe.strMealThumb}
+              alt={recipe.strMeal}
+              fill
+              className="object-contain rounded-lg shadow-md"
+            />
+          </div>
+          {recipe.strYoutube && (
+            <div className="flex justify-center mb-8">
+              <iframe
+                width="560"
+                height="315"
+                src={`https://www.youtube.com/embed/${
+                  recipe.strYoutube.split("v=")[1]
+                }`}
+                title="YouTube video player"
+                frameBorder="0"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                allowFullScreen
+              ></iframe>
+            </div>
+          )}
+        </div>
         <div className="md:ml-8 flex-1">
           <h2 className="text-2xl font-bold mb-4">Ingredients</h2>
           <ul className="list-disc pl-5 mb-4">
@@ -88,21 +106,6 @@ export default function RecipeDetail({ params }: PageProps) {
           </div>
         </div>
       </div>
-      {recipe.strYoutube && (
-        <div className="flex justify-center mb-8">
-          <iframe
-            width="560"
-            height="315"
-            src={`https://www.youtube.com/embed/${
-              recipe.strYoutube.split("v=")[1]
-            }`}
-            title="YouTube video player"
-            frameBorder="0"
-            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-            allowFullScreen
-          ></iframe>
-        </div>
-      )}
     </div>
   );
 }
